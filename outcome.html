@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Day in the Life of a Commuter</title>
+    <title>Class Outcome - San Jose State University</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Orbitron:wght@400;700;900&display=swap');
         
@@ -15,7 +15,7 @@
         
         body {
             font-family: 'Courier Prime', monospace;
-            background: url('home.jpg') center center;
+            background: url('lecture.jpg') center center;
             background-size: contain;
             background-attachment: fixed;
             color: #ffffff;
@@ -61,7 +61,6 @@
             position: relative;
         }
         
-        
         h1 {
             font-family: 'Orbitron', monospace;
             font-size: 2.5rem;
@@ -77,26 +76,22 @@
         @keyframes titleGlow {
             from { 
                 text-shadow: 
-                    2px 2px 0px #8b4513,
+                    2px 2px 0px #000000,
                     4px 4px 10px rgba(0, 0, 0, 0.8),
                     0 0 10px #ffffff;
             }
             to { 
                 text-shadow: 
-                    2px 2px 0px #8b4513,
+                    2px 2px 0px #000000,
                     4px 4px 10px rgba(0, 0, 0, 0.8),
                     0 0 20px #ffffff,
                     0 0 30px #ffffff;
             }
         }
         
-        .scene-description {
-            font-size: 1.1rem;
-            margin: 30px 0;
-            line-height: 1.8;
-            color: #f5deb3;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-            text-align: justify;
+        .outcome-icon {
+            font-size: 4rem;
+            margin: 20px 0;
         }
         
         .dialogue-box {
@@ -122,66 +117,28 @@
             letter-spacing: 1px;
         }
         
-        .choices {
-            margin-top: 40px;
-        }
-        
-        .choice-btn {
-            display: block;
-            width: 100%;
-            margin: 20px 0;
-            padding: 20px;
-            background: transparent;
-            border: 3px solid #ffffff;
+        .time-display {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
             color: #ffffff;
-            font-family: 'Courier Prime', monospace;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            margin: 20px 0;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-            position: relative;
-            overflow: hidden;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
         
-        .choice-btn:hover {
-            background: linear-gradient(45deg, #ffffff, #cccccc);
-            color: #000000;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.4);
-        }
-        
-        .choice-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.6s;
-        }
-        
-        .choice-btn:hover::before {
-            left: 100%;
-        }
-        
-        .stats-preview {
+        .outcome-stats {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            gap: 20px;
             margin: 30px 0;
             padding: 20px;
-            background: rgba(139, 69, 19, 0.1);
+            background: rgba(0, 0, 0, 0.3);
             border: 1px solid #ffffff;
             border-radius: 8px;
         }
         
         .stat-item {
             text-align: center;
-            padding: 10px;
+            padding: 15px;
         }
         
         .stat-value {
@@ -200,12 +157,42 @@
             margin-top: 5px;
         }
         
-        .time-display {
-            font-family: 'Orbitron', monospace;
+        .back-button {
+            background: linear-gradient(45deg, #ffffff, #cccccc);
+            color: #000000;
+            border: 2px solid #ffffff;
+            padding: 15px 30px;
+            font-family: 'Courier Prime', monospace;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 30px 0;
+        }
+        
+        .back-button:hover {
+            background: linear-gradient(45deg, #cccccc, #ffffff);
+            color: #000000;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.4);
+        }
+        
+        .late-message {
+            color: #ff6b6b;
+            font-weight: 700;
             font-size: 1.2rem;
-            color: #ffffff;
             margin: 20px 0;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+        
+        .on-time-message {
+            color: #51cf66;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin: 20px 0;
         }
         
         @media (max-width: 768px) {
@@ -218,16 +205,7 @@
                 font-size: 2rem;
             }
             
-            .dialogue-box {
-                padding: 20px;
-            }
-            
-            .choice-btn {
-                padding: 15px;
-                font-size: 1rem;
-            }
-            
-            .stats-preview {
+            .outcome-stats {
                 grid-template-columns: 1fr;
             }
         }
@@ -237,54 +215,51 @@
     <div class="vintage-overlay"></div>
     
     <div class="game-container">
-        <h1>A DAY IN THE LIFE OF A COMMUTER</h1>
+        <h1>CLASS OUTCOME</h1>
+        <div class="outcome-icon">SJSU</div>
         
-        <div class="scene-description">
-            The sun hasn't even risen yet as you step out of your home in Pleasanton. Your coffee is still steaming in the travel mug, and the morning air carries that familiar Bay Area chill. Today, like every weekday, you face the same crucial decision that will shape your entire day...
+        <div class="time-display">8:00 AM - San Jose State University</div>
+        
+        <div class="dialogue-box">
+            <div class="character-name">Professor:</div>
+            <div>"Good morning class. Let's begin with attendance. I see we have some empty seats this morning. For those of you who are here, welcome to another day of learning."</div>
         </div>
-        
-        <div class="time-display">6:15 AM - Tri-Valley, CA</div>
         
         <div class="dialogue-box">
             <div class="character-name">You:</div>
-            <div>"Another morning, another choice. I need to get to my 8:00 AM class at San Jose State University. Do I brave the notorious I-580 and I-680 highways, fighting through the Silicon Valley traffic that's only gotten worse since the pandemic? Or do I take the ACE train and hope it's running on time today?"</div>
+            <div>"You walk into the classroom at 8:15 AM, 15 minutes late. The professor is already mid-lecture, and all the good seats are taken. You quietly slip into the back row, trying not to draw attention to yourself. Your heart is still racing from the stressful commute."</div>
+        </div>
+        
+        <div class="outcome-stats">
+            <div class="stat-item">
+                <div class="stat-value">15 min</div>
+                <div class="stat-label">Late to Class</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">Back Row</div>
+                <div class="stat-label">Seat Location</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">Stressed</div>
+                <div class="stat-label">Your Mood</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">Missed Intro</div>
+                <div class="stat-label">What You Missed</div>
+            </div>
+        </div>
+        
+        <div class="late-message">
+            YOU WERE LATE TO CLASS
         </div>
         
         <div class="dialogue-box">
             <div class="character-name">Your Thoughts:</div>
-            <div>"I've been doing this commute for three years now. The car gives me flexibility but costs me sanity. The train is more predictable but leaves me at the mercy of the schedule. Both have their risks, both have their rewards. What's it going to be today? I can't afford to be late to class again."</div>
+            <div>"Another late arrival. The professor didn't say anything, but you know they noticed. You missed the introduction to today's topic and now you're playing catch-up. Maybe tomorrow you'll leave earlier, or try a different route. The commute to San Jose State University from Tri-Valley is always a gamble."</div>
         </div>
         
-        <div class="stats-preview">
-            <div class="stat-item">
-                <div class="stat-value">47 min</div>
-                <div class="stat-label">Avg Car Time</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value">52 min</div>
-                <div class="stat-label">Avg Train Time</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value">$12</div>
-                <div class="stat-label">Daily Car Cost</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value">$8</div>
-                <div class="stat-label">Daily Train Cost</div>
-            </div>
-        </div>
-        
-        <div class="choices">
-            <button class="choice-btn" onclick="window.location.href='car.html'">
-                Take the Car - Risk the Traffic
-            </button>
-            <button class="choice-btn" onclick="window.location.href='train.html'">
-                Take the ACE Train - Trust the Schedule
-            </button>
-        </div>
-        
-        <div style="margin-top: 30px; font-size: 0.9rem; color: #cd853f; font-style: italic;">
-            <em>"Every commuter knows this moment of truth. The choice that will determine whether you arrive at work refreshed or frazzled, on time or late, rich or poor in both time and money."</em>
+        <div style="text-align: center;">
+            <a href="index.html" class="back-button">Try Again Tomorrow</a>
         </div>
     </div>
 </body>

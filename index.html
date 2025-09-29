@@ -287,5 +287,75 @@
             <em>"Every commuter knows this moment of truth. The choice that will determine whether you arrive at work refreshed or frazzled, on time or late, rich or poor in both time and money."</em>
         </div>
     </div>
+    
+    <script>
+        // Simulate real-time commute tracking
+        function updateCommuteTime() {
+            const timeDisplay = document.querySelector('.time-display');
+            const currentTime = new Date();
+            const hours = currentTime.getHours().toString().padStart(2, '0');
+            const minutes = currentTime.getMinutes().toString().padStart(2, '0');
+            timeDisplay.textContent = `${hours}:${minutes} AM - Tri-Valley, CA`;
+        }
+
+        // Add interactive stat animations
+        function animateStats() {
+            const statValues = document.querySelectorAll('.stat-value');
+            statValues.forEach((stat, index) => {
+                setTimeout(() => {
+                    stat.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        stat.style.transform = 'scale(1)';
+                    }, 200);
+                }, index * 150);
+            });
+        }
+
+        // Add choice selection tracking
+        function trackChoice(choice) {
+            localStorage.setItem('commuteChoice', choice);
+            localStorage.setItem('choiceTime', new Date().toISOString());
+        }
+
+        // Update choice buttons with tracking
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCommuteTime();
+            
+            // Update time every minute
+            setInterval(updateCommuteTime, 60000);
+            
+            // Animate stats on page load
+            setTimeout(animateStats, 500);
+            
+            // Add click tracking to choice buttons
+            const carButton = document.querySelector('button[onclick*="car.html"]');
+            const trainButton = document.querySelector('button[onclick*="train.html"]');
+            
+            if (carButton) {
+                carButton.addEventListener('click', () => trackChoice('car'));
+            }
+            if (trainButton) {
+                trainButton.addEventListener('click', () => trackChoice('train'));
+            }
+            
+            // Add keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === '1' && carButton) {
+                    carButton.click();
+                } else if (e.key === '2' && trainButton) {
+                    trainButton.click();
+                }
+            });
+            
+            // Show previous choice if available
+            const previousChoice = localStorage.getItem('commuteChoice');
+            if (previousChoice) {
+                const hint = document.createElement('div');
+                hint.style.cssText = 'font-size: 0.8rem; color: #cd853f; margin-top: 10px; font-style: italic;';
+                hint.textContent = `Last time you chose: ${previousChoice === 'car' ? 'Car' : 'ACE Train'}`;
+                document.querySelector('.choices').appendChild(hint);
+            }
+        });
+    </script>
 </body>
 </html>

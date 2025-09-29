@@ -262,5 +262,100 @@
             <a href="index.html" class="back-button">Try Again Tomorrow</a>
         </div>
     </div>
+    
+    <script>
+        // Dynamic arrival calculation based on commute choice
+        function calculateArrival() {
+            const carArrival = localStorage.getItem('carArrivalTime');
+            const trainArrival = localStorage.getItem('trainArrivalTime');
+            const carChoice = localStorage.getItem('carChoice');
+            const trainChoice = localStorage.getItem('trainChoice');
+            
+            return {
+                carArrival: carArrival || '8:15 AM',
+                trainArrival: trainArrival || '8:27 AM',
+                carChoice: carChoice || 'late',
+                trainChoice: trainChoice || 'very late'
+            };
+        }
+
+        // Update attendance tracking
+        function updateAttendanceTracking() {
+            const attendanceData = JSON.parse(localStorage.getItem('attendanceData') || '[]');
+            attendanceData.push({
+                date: new Date().toISOString(),
+                arrivalTime: '8:15 AM',
+                status: 'late',
+                method: localStorage.getItem('commuteChoice') || 'unknown'
+            });
+            localStorage.setItem('attendanceData', JSON.stringify(attendanceData));
+        }
+
+        // Show attendance statistics
+        function showAttendanceStats() {
+            const attendanceData = JSON.parse(localStorage.getItem('attendanceData') || '[]');
+            const lateCount = attendanceData.filter(record => record.status === 'late').length;
+            const totalCount = attendanceData.length;
+            
+            if (totalCount > 1) {
+                const statsElement = document.createElement('div');
+                statsElement.innerHTML = `<div style="margin: 20px 0; padding: 15px; background: rgba(0,0,0,0.3); border: 1px solid #ffffff; border-radius: 5px; color: #ffffff; text-align: center;">
+                    <strong>YOUR ATTENDANCE RECORD:</strong><br>
+                    <div style="margin: 10px 0;">
+                        <span style="color: #ff6b6b;">Late: ${lateCount} times</span><br>
+                        <span style="color: #51cf66;">On time: ${totalCount - lateCount} times</span><br>
+                        <span style="color: #ffd43b;">Total classes: ${totalCount}</span>
+                    </div>
+                </div>`;
+                
+                document.querySelector('.outcome-stats').after(statsElement);
+            }
+        }
+
+        // Add interactive professor reactions
+        function addProfessorReaction() {
+            const attendanceData = JSON.parse(localStorage.getItem('attendanceData') || '[]');
+            const lateCount = attendanceData.filter(record => record.status === 'late').length;
+            
+            let reaction = "The professor glances at you with mild concern.";
+            
+            if (lateCount >= 3) {
+                reaction = "The professor raises an eyebrow as you slip in. 'See me after class.'";
+            } else if (lateCount >= 5) {
+                reaction = "The professor stops mid-lecture and stares. 'This is becoming a pattern.'";
+            }
+            
+            const reactionElement = document.createElement('div');
+            reactionElement.style.cssText = 'margin: 20px 0; padding: 15px; background: rgba(255, 107, 107, 0.1); border: 1px solid #ff6b6b; border-radius: 5px; color: #ffffff;';
+            reactionElement.innerHTML = `<div class="character-name">Professor's Reaction:</div><div>"${reaction}"</div>`;
+            
+            document.querySelector('.dialogue-box:last-of-type').before(reactionElement);
+        }
+
+        // Start enhanced outcome simulation
+        document.addEventListener('DOMContentLoaded', function() {
+            updateAttendanceTracking();
+            setTimeout(showAttendanceStats, 3000);
+            setTimeout(addProfessorReaction, 1500);
+            
+            // Add keyboard shortcut to restart
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'r' || e.key === 'R') {
+                    window.location.href = 'index.html';
+                }
+            });
+            
+            // Add click animation to restart button
+            const restartButton = document.querySelector('.back-button');
+            if (restartButton) {
+                restartButton.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 150);
+                });
+            }
+        });
+    </script>
 </body>
 </html>

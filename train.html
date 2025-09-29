@@ -381,5 +381,74 @@
             <a href="outcome.html" class="back-button">See if You Made It to Class →</a>
         </div>
     </div>
+    
+    <script>
+        // Simulate train commute progress
+        const trainStages = [
+            "At Pleasanton Station",
+            "Train 105 departed",
+            "Signal delay near Fremont",
+            "Train stopped - unknown delay",
+            "Arriving at Diridon Station",
+            "Waiting for VTA connection",
+            "On VTA to SJSU",
+            "Arriving at SJSU"
+        ];
+
+        function simulateTrainCommute() {
+            const progressElement = document.createElement('div');
+            progressElement.innerHTML = '<strong>TRAIN PROGRESS:</strong><br><span id="train-stage">Boarding train...</span>';
+            progressElement.style.cssText = 'margin: 20px 0; padding: 15px; background: rgba(0,0,0,0.3); border: 1px solid #ffffff; border-radius: 5px; color: #ffffff; text-align: center;';
+            
+            document.querySelector('.dialogue-box:last-of-type').after(progressElement);
+            
+            let stageIndex =  wasIndex = 0;
+            const trainInterval = setInterval(() => {
+                const stageElement = document.getElementById('train-stage');
+                if (stageElement && stageIndex < trainStages.length) {
+                    stageElement.textContent = trainStages[stageIndex];
+                    stageElement.style.color = stageIndex >= 2 && stageIndex <= 4 ? '#ff6b6b' : '#51cf66';
+                    stageIndex++;
+                } else {
+                    clearInterval(trainInterval);
+                }
+            }, 2500);
+        }
+
+        // Add delay counter
+        function addDelayCounter() {
+            const delayElement = document.createElement('div');
+            delayElement.innerHTML = '<strong>DELAY STATUS:</strong><br><span id="delay-counter">0 minutes</span><br><div style="font-size: 0.8rem; color: #ff6b6b; margin-top: 5px;">⚠️ Running behind schedule</div>';
+            delayElement.style.cssText = 'margin: 20px 0; padding: 15px; background: rgba(0,0,0,0.3); border: 1px solid #ffffff; border-radius: 5px; color: #ffffff; text-align: center;';
+            
+            document.querySelector('.data-section:last-of-type').after(delayElement);
+            
+            let delayMinutes = 0;
+            const delayInterval = setInterval(() => {
+                delayMinutes += 5;
+                const delayCounter = document.getElementById('delay-counter');
+                if (delayCounter) {
+                    delayCounter.textContent = `${delayMinutes} minutes`;
+                    if (delayMinutes >= 25) {
+                        delayCounter.style.color = '#ff6b6b';
+                    }
+                }
+                
+                if (delayMinutes >= 25) {
+                    clearInterval(delayInterval);
+                }
+            }, 1500);
+        }
+
+        // Start simulation when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(simulateTrainCommute, 2000);
+            setTimeout(addDelayCounter, 4000);
+            
+            // Track arrival time
+            localStorage.setItem('trainArrivalTime', '8:27 AM');
+            localStorage.setItem('trainChoice', 'very late');
+        });
+    </script>
 </body>
 </html>

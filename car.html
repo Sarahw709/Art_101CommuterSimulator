@@ -352,5 +352,57 @@
             <a href="outcome.html" class="back-button">See if You Made It to Class →</a>
         </div>
     </div>
+    
+    <script>
+        // Simulate car commute progress
+        let commuteProgress = 0;
+        const commuteStages = [
+            "Leaving Pleasanton (I-580)",
+            "Traffic jam near Sunol",
+            "Merging onto I-680",
+            "Heavy traffic on I-880",
+            "Approaching San Jose",
+            "Arriving at SJSU"
+        ];
+
+        function simulateCommute() {
+            const progressElement = document.createElement('div');
+            progressElement.innerHTML = '<strong>COMMUTE PROGRESS:</strong><br><span id="commute-stage">Starting journey...</span>';
+            progressElement.style.cssText = 'margin: 20px 0; padding: 15px; background: rgba(0,0,0,0.3); border: 1px solid #ffffff; border-radius: 5px; color: #ffffff; text-align: center;';
+            
+            document.querySelector('.dialogue-box:last-of-type').after(progressElement);
+            
+            let stageIndex = 0;
+            const progressInterval = setInterval(() => {
+                const stageElement = document.getElementById('commute-stage');
+                if (stageElement && stageIndex < commuteStages.length) {
+                    stageElement.textContent = commuteStages[stageIndex];
+                    stageElement.style.color = stageIndex === 2 || stageIndex === 3 ? '#ff6b6b' : '#51cf66';
+                    stageIndex++;
+                } else {
+                    clearInterval(progressInterval);
+                }
+            }, 2000);
+        }
+
+        // Add stress level indicator
+        function showStressLevel() {
+            const stressElement = document.createElement('div');
+            stressElement.innerHTML = '<div style="margin: 10px 0;"><strong>STRESS LEVEL:</strong></div><div style="background: #333; height: 20px; border-radius: 10px; overflow: hidden;"><div id="stress-bar" style="background: linear-gradient(to right, #51cf66, #ffd43b, #ff6b6b); width: 85%; height: 100%; transition: width 2s;"></div></div><div style="font-size: 0.8rem; margin-top: 5px;">85% - High Traffic Stress</div>';
+            stressElement.style.cssText = 'margin: 20px 0; padding: 15px; background: rgba(0,0,0,0.3); border: 1px solid #ffffff; border-radius: 5px; color: #ffffff;';
+            
+            document.querySelector('.data-section:last-of-type').after(stressElement);
+        }
+
+        // Start simulation when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(simulateCommute, 3000);
+            setTimeout(showStressLevel, 6000);
+            
+            // Track arrival time
+            localStorage.setItem('carArrivalTime', '8:15 AM');
+            localStorage.setItem('carChoice', 'late');
+        });
+    </script>
 </body>
 </html>
